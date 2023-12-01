@@ -20,8 +20,8 @@ aoc 2023, 1 do
   end
 
   def p2(input) do
-    [{"one", "1"}, {"two", "2"}, {"three", "3"}, {"four", "4"}, {"five", "5"}, {"six", "6"}, {"seven", "7"}, {"eight", "8"}, {"nine", "9"}]
-    |> Enum.reduce(input, fn {word, number}, s -> String.replace(s, word, "#{word}#{number}#{word}", global: true) end)
+    %{one: 1, two: 2, three: 3, four: 4, five: 5, six: 6, seven: 7, eight: 8, nine: 9}
+    |> Enum.reduce(input, fn {word, number}, s -> String.replace(s, "#{word}", "#{word}#{number}#{word}", global: true) end)
     |> p1()
   end
 end
