@@ -5,9 +5,18 @@ aoc 2023, 1 do
   https://adventofcode.com/2023/day/1
   """
 
+  def calibration(s) do
+    s
+    |> String.split("", trim: true)
+    |> Enum.filter(&("0" <= &1 and &1 <= "9"))
+    |> then(&String.to_integer("#{hd(&1)}#{List.last(&1)}"))
+  end
+
   def p1(input) do
-    compute = fn s -> s |> String.split("", trim: true) |> Enum.filter(&("0" <= &1 and &1 <= "9")) |> then(&String.to_integer("#{hd(&1)}#{List.last(&1)}")) end
-    input |> String.split("\n", trim: true) |> Enum.map(compute) |> Enum.sum()
+    input
+    |> String.split("\n", trim: true)
+    |> Enum.map(&calibration/1)
+    |> Enum.sum()
   end
 
   def p2(input) do
