@@ -11,8 +11,6 @@ aoc 2023, 4 do
   def p1(input) do
     input
     |> winning_cards()
-    |> Enum.unzip()
-    |> elem(1)
     |> Enum.map(fn 0 -> 0; n -> 2 ** (n-1) end)
     |> Enum.sum()
   end
@@ -21,14 +19,10 @@ aoc 2023, 4 do
     process = fn card -> card |> String.split(" ", trim: true) |> Enum.map(&String.to_integer/1) |> MapSet.new end
     input
     |> String.split("\n", trim: true)
-    |> Enum.map(
-      fn line ->
-        ["Card " <> n, cards] = String.split(line, ": ")
-        card_strs = String.split(cards, "|")
-        [winning, holding] = card_strs |> Enum.map(process)
-        {String.to_integer(String.trim(n)), MapSet.intersection(winning, holding) |> Enum.count()}
-      end
-    )
+    |> Enum.map(fn line ->
+       [winning, held] = line |> String.split(": ") |> Enum.at(1) |> String.split("|") |> Enum.map(process)
+       MapSet.intersection(winning, held) |> Enum.count()
+      end)
   end
 
   @doc """
@@ -37,19 +31,16 @@ aoc 2023, 4 do
   def p2(input) do
     input
     |> winning_cards()
-    |> Enum.map(fn {i, n} -> {i, {1, n}} end)
+    |> Enum.map(&{1, &1})
     |> process()
-    |> Enum.unzip()
-    |> elem(1)
     |> Enum.unzip()
     |> elem(0)
     |> Enum.sum()
   end
 
   def process([]), do: []
-  def process([{i, {0, n}} = x | xs]), do: [x | process(xs)]
-  def process([{i, {count, multiplier}} = x | xs]) do
+  def process([{count, multiplier} = x | xs]) do
     {before, after_} = Enum.split(xs, multiplier)
-    [x | process(Enum.map(before, fn {i, {c, n}} -> {i, {c + count, n}} end) ++ after_)]
+    [x | process(Enum.map(before, fn {c, n} -> {c + count, n} end) ++ after_)]
   end
 end
