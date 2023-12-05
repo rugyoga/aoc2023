@@ -1,13 +1,6 @@
 import AOC
 
 aoc 2023, 4 do
-  @moduledoc """
-  https://adventofcode.com/2023/day/4
-  """
-
-  @doc """
-      iex> p1(example_input())
-  """
   def p1(input) do
     input
     |> winning_cards()
@@ -16,18 +9,18 @@ aoc 2023, 4 do
   end
 
   def winning_cards(input) do
-    process = fn card -> card |> String.split(" ", trim: true) |> Enum.map(&String.to_integer/1) |> MapSet.new end
     input
     |> String.split("\n", trim: true)
     |> Enum.map(fn line ->
-       [winning, held] = line |> String.split(": ") |> Enum.at(1) |> String.split("|") |> Enum.map(process)
-       MapSet.intersection(winning, held) |> Enum.count()
+        line
+        |> String.split(": ")
+        |> Enum.at(1)
+        |> String.split("|")
+        |> Enum.map(fn card -> card |> String.split(" ", trim: true) |> MapSet.new end)
+        |> then(fn [winning, hand] -> MapsSet.intersection(winning, hand) end)
       end)
   end
 
-  @doc """
-      iex> p2(example_input())
-  """
   def p2(input) do
     input
     |> winning_cards()
