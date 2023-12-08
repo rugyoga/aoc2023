@@ -1,5 +1,5 @@
 import AOC
-import Math
+import Math, only: [lcm: 2]
 
 aoc 2023, 8 do
   def p1(input) do
@@ -7,7 +7,7 @@ aoc 2023, 8 do
     traverse("AAA", map, 0, moves, moves, &(&1 == "ZZZ"))
   end
 
-  def extract(<<key::binary-size(3), " = (", left::binary-size(3), ", ", right::binary-size(3), ")">>) do
+  def extract(<<key::binary-3, " = (", left::binary-3, ", ", right::binary-3, ")">>) do
     {key, {left, right}}
   end
 
@@ -16,14 +16,13 @@ aoc 2023, 8 do
     if finished?.(key) do
       n
     else
-      {left, right} = map[key]
-      traverse(if(move == "L", do: left, else: right), map, n+1, moves, path, finished?)
+      traverse(elem(map[key], move), map, n+1, moves, path, finished?)
     end
   end
 
   def parse(input) do
     [moves_str, map_str] = input |> String.split("\n\n")
-    {moves_str |> String.split("", trim: true),
+    {moves_str |> String.split("", trim: true) |> Enum.map(&(%{"L" => 0, "R" => 1}[&1])),
      map_str |> String.split("\n") |> Enum.map(&extract/1) |> Map.new}
   end
 
@@ -32,7 +31,7 @@ aoc 2023, 8 do
     map
     |> Map.keys()
     |> Enum.filter(&String.ends_with?(&1, "A"))
-    |> Enum.map(fn start -> traverse(start, map, 0, moves, moves, &String.ends_with?(&1, "Z")) end)
+    |> Enum.map(&traverse(&1, map, 0, moves, moves, fn s -> String.ends_with?(s, "Z") end))
     |> Enum.reduce(&lcm/2)
   end
 end
