@@ -33,7 +33,6 @@ aoc 2023, 7 do
     line
     |> String.split()
     |> then(fn [hand, bid] ->
-
       {{
         hand
         |> String.split("", trim: true)
@@ -49,16 +48,13 @@ aoc 2023, 7 do
 
   def go_wild(freqs) do
       {wild, freqs} = Map.pop(freqs, "J")
-      if is_nil(wild) do
-        freqs
-      else
-        if Enum.count(freqs) == 0 do
-          %{"A" => 5}
-        else
+      cond do
+        is_nil(wild) -> freqs
+        Enum.count(freqs) == 0 -> %{"A" => 5}
+        true ->
           best = freqs |> Map.values |> Enum.max
           {card, _} = freqs |> Enum.filter(fn {_, v} -> v == best end) |> Enum.sort() |> hd
           Map.update!(freqs, card, &(&1 + wild))
-        end
       end
   end
 end
