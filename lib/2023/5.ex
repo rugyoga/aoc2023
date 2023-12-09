@@ -9,11 +9,7 @@ aoc 2023, 5 do
 
   def map_number([], n), do: n
   def map_number([{range, _} = fun | maps], n) do
-    if n in range do
-      apply_fun(fun, n)
-    else
-      map_number(maps, n)
-    end
+    if(n in range, do: apply_fun(fun, n), else: map_number(maps, n))
   end
 
   def apply_fun({range, dest}, n), do: dest+n-range.first
@@ -28,14 +24,12 @@ aoc 2023, 5 do
             elements
             |> String.split("\n", trim: true)
             |> Enum.map(&parse_nums/1)
-            |> Enum.map(&create_mapping/1)
+            |> Enum.map(&fun_new/1)
         end
       )}
   end
 
-  def create_mapping([dest, source, length]) do
-    {source..(source+length-1), dest}
-  end
+  def fun_new([dest, source, length]), do: {source..(source+length-1), dest}
 
   def map_range(range, []), do: [range]
   def map_range(arg, [{fun, _} = fun_def | maps]) do
@@ -59,11 +53,7 @@ aoc 2023, 5 do
     |> map_ranges(maps)
   end
 
-  def normalize_ranges(ranges) do
-    ranges
-    |> Enum.sort()
-    |> merge_ranges()
-  end
+  def normalize_ranges(ranges), do: ranges |> Enum.sort() |> merge_ranges()
 
   def merge_ranges([]), do: []
   def merge_ranges([a]), do: [a]
@@ -75,18 +65,16 @@ aoc 2023, 5 do
     end
   end
 
-  def maps_number(n, maps) do
-    Enum.reduce(maps, n, &map_number/2)
-  end
+  def maps_number(n, maps), do: Enum.reduce(maps, n, &map_number/2)
 
   def parse_nums(nums), do: nums |> String.split(" ", trim: true) |> Enum.map(&String.to_integer/1)
 
   def p2(input) do
     {seeds, maps} = process(input)
-    [min.._ | _] = seeds
-      |> Enum.chunk_every(2)
-      |> Enum.map(fn [start, length] -> start..(start+length-1) end)
-      |> map_ranges(maps)
-    min
+    seeds
+    |> Enum.chunk_every(2)
+    |> Enum.map(fn [start, length] -> start..(start+length-1) end)
+    |> map_ranges(maps)
+    |> then(&(hd(&1)).first)
   end
 end

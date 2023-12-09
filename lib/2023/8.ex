@@ -7,17 +7,11 @@ aoc 2023, 8 do
     traverse("AAA", map, 0, moves, moves, &(&1 == "ZZZ"))
   end
 
-  def extract(<<key::binary-3, " = (", left::binary-3, ", ", right::binary-3, ")">>) do
-    {key, {left, right}}
-  end
+  def extract(<<key::binary-3, " = (", left::binary-3, ", ", right::binary-3, ")">>), do: {key, {left, right}}
 
   def traverse(key, map, n, [], path, finished?), do: traverse(key, map, n, path, path, finished?)
   def traverse(key, map, n, [move | moves], path, finished?) do
-    if finished?.(key) do
-      n
-    else
-      traverse(elem(map[key], move), map, n+1, moves, path, finished?)
-    end
+    if(finished?.(key), do: n, else: traverse(elem(map[key], move), map, n+1, moves, path, finished?))
   end
 
   def parse(input) do
