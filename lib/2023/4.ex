@@ -17,7 +17,7 @@ aoc 2023, 4 do
         |> Enum.at(1)
         |> String.split("|")
         |> Enum.map(fn card -> card |> String.split(" ", trim: true) |> MapSet.new end)
-        |> then(fn [winning, hand] -> MapsSet.intersection(winning, hand) end)
+        |> then(fn [winning, hand] -> MapSet.intersection(winning, hand) |> Enum.count() end)
       end)
   end
 

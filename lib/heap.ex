@@ -32,4 +32,10 @@ defmodule Heap do
       {item, new_h} = pop(h)
       [item | to_list(new_h)]
   end
+
+  # defimpl String.Chars, for: Heap do
+  #   def to_string(heap) do
+  #     "%Heap{ <#{Heap.to_list(heap)}> }"
+  #   end
+  # end
 end

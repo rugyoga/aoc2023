@@ -2,8 +2,8 @@ import AOC
 
 aoc 2023, 3 do
   def p1(input) do
-    {symbols, nums} = input |> String.split("", trim: true) |> parse({0,0}, {%{}, []})
-    nums
+    {symbols, numbers} = input |> String.split("", trim: true) |> parse({0,0}, {%{}, []})
+    numbers
     |> Enum.filter(fn {indices, _} -> symbol_adjacent?(symbols, indices) end)
     |> Enum.unzip
     |> elem(1)
@@ -20,7 +20,6 @@ aoc 2023, 3 do
       is_digit(char) ->
         {num_chars, non_num_chars} = Enum.split_while(l, &is_digit/1)
         number = num_chars |> Enum.join("") |> String.to_integer()
-        value = {coord, number}
         {indices, last_col} = num_chars |> Enum.reduce({[], col}, fn _, {numbers, col} -> {[{row, col} | numbers], col+1} end)
         parse(non_num_chars, {row, last_col}, {symbols, [{Enum.reverse(indices), number} | numbers]})
       true ->
@@ -31,10 +30,12 @@ aoc 2023, 3 do
   def is_digit(ch), do: "0" <= ch and ch <= "9"
 
   def p2(input) do
-    {symbols, nums} = input |> String.split("", trim: true) |> parse({0,0}, {%{}, []})
-    gears = symbols |> Enum.filter(fn {coord, symbol} -> symbol == "*" end) |> Enum.unzip |> elem(0) |> MapSet.new
-    numbers = nums |> Enum.reduce(%{}, fn {indices, number}, numbers -> Enum.reduce(indices, numbers, &Map.put(&2, &1, {hd(indices), number})) end)
-    gears
+    {symbols, numbers} = input |> String.split("", trim: true) |> parse({0,0}, {%{}, []})
+    numbers = numbers |> Enum.reduce(%{}, fn {indices, number}, numbers -> Enum.reduce(indices, numbers, &Map.put(&2, &1, {hd(indices), number})) end)
+    symbols
+    |> Enum.filter(fn {_, symbol} -> symbol == "*" end)
+    |> Enum.unzip
+    |> elem(0)
     |> Enum.map(&numbers_adjacent(&1, numbers))
     |> Enum.filter(fn l -> length(l) == 2 end)
     |> Enum.map(fn l -> l |> Enum.map(&elem(&1, 1)) |> Enum.product() end)

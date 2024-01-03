@@ -1,21 +1,10 @@
 # Aoc2023
 
-**TODO: Add description**
+Guy Argo's solutions to Advent of Code starting at 2023 and working our
+way backwards by porting previous solutions to use the handy `advent_of_code_utils`
+lib written by `@mathsaey`. It automagically grabs the inpuit for you and
+creates p1 and p2 stubs.
 
-## Installation
+# 2023 notes
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `aoc2023` to your list of dependencies in `mix.exs`:
-
-```elixir
-def deps do
-  [
-    {:aoc2023, "~> 0.1.0"}
-  ]
-end
-```
-
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at <https://hexdocs.pm/aoc2023>.
 
