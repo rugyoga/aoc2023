@@ -16,8 +16,8 @@ aoc 2023, 16 do
   def p2(input) do # very slow
     grid = Grid.parse(input)
 
-    (for(row <- 0..(grid.rows-1), do: [{{row, 0}, :east}, {{row, grid.cols-1}, :west}]) ++
-    for(col <- 0..(grid.cols-1), do: [{{0, col}, :south}, {{grid.rows-1, col}, :north}]))
+    for(row <- 0..(grid.rows-1), do: [{{row, 0}, :east}, {{row, grid.cols-1}, :west}]) ++
+    for(col <- 0..(grid.cols-1), do: [{{0, col}, :south}, {{grid.rows-1, col}, :north}])
     |> List.flatten()
     |> Enum.map(&compute(grid, &1))
     |> Enum.max()
@@ -30,6 +30,7 @@ aoc 2023, 16 do
       energized_new = MapSet.put(energized, active_pos)
       seen_new = MapSet.put(seen, active)
       f = fn candidates -> candidates |> Kernel.++(actives) |> then(&recurse(grid, &1, energized_new, seen_new)) end
+      item = grid.map[active_pos]
       item = grid.map[active_pos]
       cond do
         item == "." or
