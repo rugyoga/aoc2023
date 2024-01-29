@@ -17,7 +17,7 @@ aoc 2023, 24 do
     (x - x2) * vx2 > 0 and (y - y2) * vy2 > 0
   end
 
-  def map_pairs(list, f), do: for a <- list, b <- list, a < b, do: f.(a, b)
+  def map_pairs(list, f), do: for(a <- list, b <- list, a < b, do: f.(a, b))
 
   def normalize({x, y}) do
     d = Math.sqrt(x * x + y * y)

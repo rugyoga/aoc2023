@@ -7,7 +7,7 @@ aoc 2023, 21 do
     Queue.new()
     |> Queue.add_back({0, start})
     |> search(grid, MapSet.new)
-    |> Enum.filter(fn {n, p} -> n == 64 end)
+    |> Enum.filter(fn {n, _} -> n == 64 end)
     |> Enum.count()
   end
 
