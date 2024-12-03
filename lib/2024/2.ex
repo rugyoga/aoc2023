@@ -1,9 +1,9 @@
 import AOC
 
 aoc 2024, 2 do
-  def p1(input), do: common(input, &safe?/1)
+  def p1(input), do: count(input, &safe?/1)
 
-  def p2(input), do: common(input, &almost_safe?/1)
+  def p2(input), do: count(input, &almost_safe?/1)
 
   defp safe?(level) do
     values = level |> Enum.chunk_every(2, 1, :discard) |> Enum.map(&classify/1)
@@ -22,7 +22,7 @@ aoc 2024, 2 do
     end
   end
 
-  defp common(input, f) do
+  defp count(input, f) do
     input
     |> String.split("\n", trim: true)
     |> Enum.map(fn line -> line |> String.split(" ", trim: true) |> Enum.map(&String.to_integer/1) end)
