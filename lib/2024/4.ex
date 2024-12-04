@@ -4,16 +4,12 @@ aoc 2024, 4 do
   def p1(input) do
     {map, grid} = parse(input)
     [_ | letters] = Enum.with_index(["X", "M", "A", "S"])
-    map["X"]
-    |> Enum.map(&count_xmas(grid, letters, &1))
-    |> Enum.sum()
+    map["X"] |> Enum.map(&count_xmas(grid, letters, &1)) |> Enum.sum()
   end
 
   def p2(input) do
     {map, grid} = parse(input)
-    map["A"]
-    |> Enum.map(&count_x_mas(grid, &1))
-    |> Enum.sum()
+    map["A"] |> Enum.map(&count_x_mas(grid, [["M", "S"], ["S", "M"]], &1)) |> Enum.sum()
   end
 
   def count_xmas(grid, letters, {x_start, y_start}) do
@@ -21,8 +17,7 @@ aoc 2024, 4 do
     |> Enum.count(fn {x, y} -> Enum.all?(letters, fn {letter, i} -> grid[{x_start + i*x, y_start + i * y}] == letter end) end)
   end
 
-  def count_x_mas(grid, {x_start, y_start}) do
-    trees = [["M", "S"], ["S", "M"]]
+  def count_x_mas(grid, trees, {x_start, y_start}) do
     for a <- trees, b <- trees do
       Enum.zip_with(a ++ b, [{1,1}, {-1,-1}, {1, -1}, {-1, 1}], fn letter, {x, y} -> grid[{x_start+x, y_start+y}] == letter end) |> Enum.all?()
     end |> Enum.count(& &1)
