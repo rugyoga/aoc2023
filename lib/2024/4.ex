@@ -22,15 +22,14 @@ aoc 2024, 4 do
   end
 
   def count_x_mas(grid, {x_start, y_start}) do
-    [[{"M", {1, 1}}, {"S", {-1, -1}}, {"M", {1, -1}}, {"S", {-1, 1}}],
-     [{"M", {1, 1}}, {"S", {-1, -1}}, {"S", {1, -1}}, {"M", {-1, 1}}],
-     [{"S", {1, 1}}, {"M", {-1, -1}}, {"S", {1, -1}}, {"M", {-1, 1}}],
-     [{"S", {1, 1}}, {"M", {-1, -1}}, {"M", {1, -1}}, {"S", {-1, 1}}]]
-    |> Enum.count(fn positions -> Enum.all?(positions, fn {letter, {x, y}} -> grid[{x_start+x, y_start+y}] == letter end) end)
+    trees = [["M", "S"], ["S", "M"]]
+    for a <- trees, b <- trees do
+      Enum.zip_with(a ++ b, [{1,1}, {-1,-1}, {1, -1}, {-1, 1}], fn letter, {x, y} -> grid[{x_start+x, y_start+y}] == letter end) |> Enum.all?()
+    end |> Enum.count(& &1)
   end
 
   def parse(input) do
-    letters =input
+    letters = input
       |> String.split("\n", trim: true)
       |> Enum.with_index()
       |> Enum.flat_map(fn {line, y} ->
