@@ -26,9 +26,7 @@ aoc 2024, 5 do
 
   def fixup(_, []), do: []
   def fixup(rules, current) do
-    next = Enum.find(
-      current,
-      fn x -> current -- rules[x] == [x] end
+    next = Enum.find(current, fn x -> current -- rules[x] == [x] end)
     [next | fixup(rules, List.delete(current, next))]
   end
 
