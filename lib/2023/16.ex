@@ -30,7 +30,7 @@ aoc 2023, 16 do
       energized_new = MapSet.put(energized, active_pos)
       seen_new = MapSet.put(seen, active)
       f = fn candidates -> candidates |> Kernel.++(actives) |> then(&recurse(grid, &1, energized_new, seen_new)) end
-      item = grid.map[active_pos]
+      #item = grid.map[active_pos]
       item = grid.map[active_pos]
       cond do
         item == "." or
