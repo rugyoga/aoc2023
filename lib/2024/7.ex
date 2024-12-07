@@ -1,9 +1,7 @@
 import AOC
 
 aoc 2024, 7 do
-  def p1(input) do
-    common(input, &makeable?/2)
-  end
+  def p1(input), do: common(input, &makeable?/2)
 
   defp common(input, f) do
     input
@@ -18,11 +16,7 @@ aoc 2024, 7 do
   def makeable?(total, [num1, num2 | nums]), do: makeable?(total, [num1+num2| nums]) or makeable?(total, [num1*num2|nums])
 
   def makeable2?(total, [accum]), do: total == accum
-  def makeable2?(total, [num1, num2 | nums]), do: makeable2?(total, [num1+num2| nums]) or makeable2?(total, [num1*num2|nums]) or makeable2?(total, [concat(num1,num2)|nums])
+  def makeable2?(total, [a, b | nums]), do: makeable2?(total, [a+b| nums]) or makeable2?(total, [a*b|nums]) or makeable2?(total, [String.to_integer("#{a}#{b}")|nums])
 
-  def concat(a, b), do: String.to_integer("#{a}#{b}")
-
-  def p2(input) do
-    common(input, &makeable2?/2)
-  end
+  def p2(input), do: common(input, &makeable2?/2)
 end
