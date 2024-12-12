@@ -4,10 +4,12 @@ aoc 2024, 9 do
   def p1(input) do
      rle = common(input)
      total_runs = rle |> Enum.filter(&is_tuple/1) |> Enum.map(&elem(&1, 1)) |> Enum.sum
-     fill_gaps(rle, Enum.reverse(rle), total_runs)
-     |> take(total_runs)
-     |> checksum(0)
-     |> Enum.sum()
+     fill_gaps(rle, Enum.reverse(rle), total_runs) |> take(total_runs) |> checksum(0) |> Enum.sum()
+  end
+
+  def p2(input) do
+    {gaps, blocks} = input |> common() |> enumerate_gaps([], [], 0)
+    fill_blocks(Enum.reverse(gaps), blocks) |> checksum_blocks()
   end
 
   def fill_gaps([], _, _), do: []
@@ -47,17 +49,6 @@ aoc 2024, 9 do
   def enumerate_gaps([{_, k} = block| rle], gaps, blocks, i), do: enumerate_gaps(rle, gaps, [{i, block} | blocks], i+k)
   def enumerate_gaps([0 | rle], gaps, blocks, i), do: enumerate_gaps(rle, gaps, blocks, i)
   def enumerate_gaps([gap | rle], gaps, blocks, i), do: enumerate_gaps(rle, [{gap, i} | gaps], blocks, i+gap)
-
-
-
-  def p2(input) do
-    rle = common(input)
-    # total_runs = rle |> Enum.filter(&is_tuple/1) |> Enum.map(&elem(&1, 1)) |> Enum.sum
-    # fill_blocks(rle, Enum.reverse(rle), total_runs)
-    {gaps, blocks} = enumerate_gaps(rle, [], [], 0)
-    fill_blocks(Enum.reverse(gaps), blocks)
-    |> checksum_blocks()
-  end
 
   def checksum_blocks([]), do: 0
   def checksum_blocks([{i, {id, 1}} | blocks]), do: i * id + checksum_blocks(blocks)

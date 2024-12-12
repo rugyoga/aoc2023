@@ -28,5 +28,5 @@ aoc 2022, 10 do
   end
 
   def p1(input), do: input |> parse() |> register(1) |> strength() |> strengths([20, 60, 100, 140, 180, 220])
-  def p2(input), do: input |> parse() |> register(1) |> crt() |> IO.puts
+  def p2(input), do: input |> parse() |> register(1) |> crt()
 end
